@@ -2,7 +2,7 @@
 # Keeping Shadow From Automatically Shutting Down by Imitating User Activity
 #
 # ## Strategy
-# We'll use PyUserInput's PyMouse to check the mouse's current position, automatically click a location on the screen at some specified time interval, and then return the mouse back to the position it was at before the click. We'll keep this loop going only for a while; it's rude and could potentially get me in trouble if I keep my Shadow running indefinitely.
+# On the client system, we'll use PyUserInput's PyMouse to check the mouse's current position, automatically click a location on the screen (chosen somewhere the Shadow client window is bound to be open) at some specified time interval, and then return the mouse back to the position it was at before the click. We'll keep this loop going only for a while; it's rude and could potentially get me in trouble if I keep my Shadow running indefinitely.
 #
 # ## Dependencies
 
@@ -34,8 +34,8 @@ def click(x, y):
     waitfor(.25)
 
 # parameters
-target_position = (1364, 1131)
-click_interval = 30
+target_position = (3538, 633)
+click_interval = 20 * 60
 duration = 3 * 60 * 60
 # -
 
