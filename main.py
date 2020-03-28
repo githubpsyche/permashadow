@@ -7,6 +7,9 @@
 # ## Dependencies
 
 # +
+# for displaying "progress"
+from IPython.display import display, clear_output
+
 # for tracking time
 import time
 from datetime import timedelta
@@ -23,8 +26,14 @@ def waitfor(seconds):
     if type(seconds) is not int and type(seconds) is not float:
         seconds = seconds.seconds
     timeout = time.time() + seconds
+    current = time.time()
+    clear_output(wait=True)
+    display('{} minutes left...'.format((timeout-time.time())/60))
     while time.time() < timeout:
-        pass
+        if current + display_update < time.time():
+            clear_output(wait=True)
+            display('{} minutes left...'.format((timeout-time.time())/60))
+            current = time.time()
     
 def click(x, y):
     "click a point on the screen"
@@ -32,11 +41,12 @@ def click(x, y):
     waitfor(.25)
     mouse.release(x,y,1)
     waitfor(.25)
-
+    
 # parameters
 target_position = (3538, 633)
 click_interval = 20 * 60
 duration = 3 * 60 * 60
+display_update = 10
 # -
 
 # ## Main Loop
