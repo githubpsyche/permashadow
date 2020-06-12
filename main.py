@@ -21,18 +21,19 @@ from pymouse import PyMouse
 mouse = PyMouse()
 
 # helper functions
-def waitfor(seconds):
+def waitfor(seconds, annotation=''):
     "wait for an arbitrary number of seconds"
     if type(seconds) is not int and type(seconds) is not float:
         seconds = seconds.seconds
     timeout = time.time() + seconds
     current = time.time()
     clear_output(wait=True)
-    display('{} minutes left...'.format((timeout-time.time())/60))
+    if annotation:
+        display('{} minutes left with annotation: {}'.format((timeout-time.time())/60, annotation))
     while time.time() < timeout:
         if current + display_update < time.time():
             clear_output(wait=True)
-            display('{} minutes left...'.format((timeout-time.time())/60))
+            display('{} minutes left with annotation: {}'.format((timeout-time.time())/60, annotation))
             current = time.time()
     
 def click(x, y):
@@ -43,8 +44,10 @@ def click(x, y):
     waitfor(.25)
     
 # parameters
-target_position = (3538, 633)
-click_interval = 20 * 60
+target_position_A = (4120, 530)
+target_position_B = (3371, 1186)
+click_interval_A = 10 * 60
+click_interval_B = 1 * 20
 duration = 3 * 60 * 60
 display_update = 10
 # -
@@ -55,9 +58,17 @@ display_update = 10
 timeout = time.time() + duration
 
 while time.time() < timeout:
-    waitfor(click_interval)
+    waitfor(click_interval_A, 'A')
     current_position = mouse.position()
-    click(*target_position)
+    click(*target_position_A)
+    print(mouse.position())
+    mouse.move(*current_position)
+    
+    waitfor(click_interval_B, 'B')
+    current_position = mouse.position()
+    click(*target_position_B)
+    click(*target_position_B)
+    print(mouse.position())
     mouse.move(*current_position)
 # -
 
